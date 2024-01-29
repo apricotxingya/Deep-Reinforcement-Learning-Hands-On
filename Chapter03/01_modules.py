@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class OurModule(nn.Module):
     def __init__(self, num_inputs, num_classes, dropout_prob=0.3):
         super(OurModule, self).__init__()
@@ -16,6 +17,7 @@ class OurModule(nn.Module):
 
     def forward(self, x):
         return self.pipe(x)
+
 
 if __name__ == "__main__":
     net = OurModule(num_inputs=2, num_classes=3)

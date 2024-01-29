@@ -11,3 +11,4 @@ __pycache__
 *.pyc
 roboschool-files
 Chapter02/recorder
+Chapter03/mnist_train

@@ -1,7 +1,6 @@
-import gymnasium as gym
-
-
 import random
+
+import gymnasium as gym
 
 
 class RandomActionWrapper(gym.ActionWrapper):

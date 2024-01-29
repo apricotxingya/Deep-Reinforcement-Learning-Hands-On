@@ -1,19 +1,15 @@
 #!/usr/bin/env python
-import random
 import argparse
-import cv2
+import random
 
+import cv2
+import gymnasium as gym
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tensorboardX import SummaryWriter
-
 import torchvision.utils as vutils
-
-import gym
-import gym.spaces
-
-import numpy as np
+from torch.utils.tensorboard import SummaryWriter
 
 log = gym.logger
 log.set_level(gym.logger.INFO)
@@ -37,6 +33,7 @@ class InputWrapper(gym.ObservationWrapper):
     1. resize image into predefined size
     2. move color channel axis to a first place
     """
+
     def __init__(self, *args):
         super(InputWrapper, self).__init__(*args)
         assert isinstance(self.observation_space, gym.spaces.Box)
@@ -60,9 +57,9 @@ class Discriminator(nn.Module):
             nn.Conv2d(in_channels=input_shape[0], out_channels=DISCR_FILTERS,
                       kernel_size=4, stride=2, padding=1),
             nn.ReLU(),
-            nn.Conv2d(in_channels=DISCR_FILTERS, out_channels=DISCR_FILTERS*2,
+            nn.Conv2d(in_channels=DISCR_FILTERS, out_channels=DISCR_FILTERS * 2,
                       kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(DISCR_FILTERS*2),
+            nn.BatchNorm2d(DISCR_FILTERS * 2),
             nn.ReLU(),
             nn.Conv2d(in_channels=DISCR_FILTERS * 2, out_channels=DISCR_FILTERS * 4,
                       kernel_size=4, stride=2, padding=1),
@@ -113,12 +110,12 @@ class Generator(nn.Module):
 
 
 def iterate_batches(envs, batch_size=BATCH_SIZE):
-    batch = [e.reset() for e in envs]
+    batch = [e.reset()[0] for e in envs]
     env_gen = iter(lambda: random.choice(envs), None)
 
     while True:
         e = next(env_gen)
-        obs, reward, is_done, _ = e.step(e.action_space.sample())
+        obs, reward, is_done, _, _ = e.step(e.action_space.sample())
         if np.mean(obs) > 0.01:
             batch.append(obs)
         if len(batch) == batch_size:

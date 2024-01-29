@@ -1,7 +1,6 @@
-from aitool import make_dir
 import gymnasium as gym
+from aitool import make_dir
 from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder
-
 
 if __name__ == "__main__":
     env = gym.make("CartPole-v1", render_mode="rgb_array")

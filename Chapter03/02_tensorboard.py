@@ -1,6 +1,8 @@
-import math
-from tensorboardX import SummaryWriter
+# 访问数据 tensorboard --logdir runs --host localhost
 
+import math
+
+from torch.utils.tensorboard import SummaryWriter
 
 if __name__ == "__main__":
     writer = SummaryWriter()
